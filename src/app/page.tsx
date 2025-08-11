@@ -1,103 +1,121 @@
-import Image from "next/image";
+import { AlertCircleIcon, SquareCheckBig, SquareX } from 'lucide-react';
+import { TutorialStep } from '@/components/tutorial/tutorial-step';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const config = [
+    { label: 'Public Supabase URL', value: process.env.NEXT_PUBLIC_SUPABASE_URL },
+    { label: 'Supabase anon KEY', value: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY },
+    { label: 'Supabase Service KEY', value: process.env.NEXT_PUBLIC_SUPABASE_SERVICE_KEY }
+  ];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="min-h-screen p-8">
+      <main>
+        <div className="flex gap-6">
+          <div>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Configuration</h3>
+            <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
+              {[...config].map(({ label, value }) => (
+                <li className="flex items-center gap-4" key={label}>
+                  {value ? <SquareCheckBig className="text-green-700" /> : <SquareX className="text-red-600" />} {label}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="ml-auto">
+            <Alert>
+              <AlertCircleIcon />
+              <AlertTitle>Fin de configuration</AlertTitle>
+              <AlertDescription>
+                <p>Si tu as terminé ta configuration et que tu veux t'en servir comme base pour ton projet</p>
+                <ul className="list-inside list-disc text-sm">
+                  <li>Définis la méthode de sign in/up que tu préfères (OTP ou password-based)</li>
+                  <li>
+                    Supprime les routes, les composants, schémas, et les actions qui ne sont plus nécessaires (ex: pas besoin garder forgot/reset-password si tu
+                    utilises l'OTP)
+                  </li>
+                  <li>
+                    Tu peux renommer la route{' '}
+                    <code className="bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">/private</code> et les strings qui y
+                    font référence pour une route plus personnalisée
+                  </li>
+                  <li>Tu peux également renommer les routes d'authentification si tu préfères autre chose</li>
+                  <li>
+                    Pour finir, tu peux supprimer le contenu de la page principal et le dossier{' '}
+                    <code className="bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">/components/tutorial</code>
+                  </li>
+                </ul>
+                <p>Bon dev ;)</p>
+              </AlertDescription>
+            </Alert>
+          </div>
+        </div>
+
+        <div>
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Etapes à suivre</h3>
+          <ol className="flex flex-col gap-6 my-6 ml-6 ">
+            <TutorialStep title="Créer ton projet Supabase">
+              <p>
+                Rends toi sur{' '}
+                <a
+                  href="https://app.supabase.com/project/_/settings/api"
+                  target="_blank"
+                  className="font-bold hover:underline text-foreground/80"
+                  rel="noreferrer">
+                  database.new
+                </a>{' '}
+                et créer ton projet Supabase
+              </p>
+            </TutorialStep>
+
+            <TutorialStep title="Declare tes variables d'environnement">
+              <p>
+                Renomme le fichier{' '}
+                <span className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-xs font-medium text-secondary-foreground border">
+                  .env.example
+                </span>{' '}
+                dans ton dossier en{' '}
+                <span className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-xs font-medium text-secondary-foreground border">
+                  .env.local
+                </span>{' '}
+                et copie/colle dans ton fichier les valeurs provenant de{' '}
+                <a
+                  href="https://app.supabase.com/project/_/settings/api"
+                  target="_blank"
+                  className="font-bold hover:underline text-foreground/80"
+                  rel="noreferrer">
+                  API Settings
+                </a>{' '}
+                et{' '}
+                <a
+                  href="https://app.supabase.com/project/_/settings/api-keys"
+                  target="_blank"
+                  className="font-bold hover:underline text-foreground/80"
+                  rel="noreferrer">
+                  API Keys
+                </a>
+                .
+              </p>
+            </TutorialStep>
+
+            <TutorialStep title="Restart ton server de dev Next.js">
+              <p>
+                Quitte le server Next.js et relance{' '}
+                <span className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-xs font-medium text-secondary-foreground border">
+                  npm run dev
+                </span>
+                {" pour charger les nouvelles variables d'environnement."}
+              </p>
+            </TutorialStep>
+
+            <TutorialStep title="Refresh ta page">
+              <p>Refresh ta page pour prendre en compte les nouvelles valeurs.</p>
+            </TutorialStep>
+          </ol>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
